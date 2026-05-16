@@ -631,7 +631,7 @@ class RhythmGame:
         title = self.font_big.render("RHYTHM GAME", True, WHITE)
         self.screen.blit(title, (SCREEN_W // 2 - title.get_width() // 2, 30))
 
-        sub = self.font_sm.render("UP / DOWN  to scroll      RIGHT  to select", True, (130, 130, 130))
+        sub = self.font_sm.render("UP / DOWN  to scroll      RIGHT  to select", True, (210, 210, 210))
         self.screen.blit(sub, (SCREEN_W // 2 - sub.get_width() // 2, 85))
 
         # Song list
