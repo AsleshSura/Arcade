@@ -653,11 +653,17 @@ class RhythmGame:
                     self._load_audio(SONGS[self.menu_cursor])
                 elif n == "R":
                     self._start_game(SONGS[self.menu_cursor])
+            for l in ev["p1_press"]:
+                if l == 3:
+                    self._start_game(SONGS[self.menu_cursor])
 
         elif self.screen_state == Screen.PAUSE:
             for n in ev["nav"]:
                 if n == "R": self._resume()
                 elif n == "L": self._back_to_menu()
+            for l in ev["p1_press"]:
+                if l == 0:
+                    self._back_to_menu()
 
         elif self.screen_state == Screen.GAME:
             for n in ev["nav"]:
@@ -675,6 +681,9 @@ class RhythmGame:
         elif self.screen_state == Screen.RESULT:
             for n in ev["nav"]:
                 if n == "L": self._back_to_menu()
+            for l in ev["p1_press"]:
+                if l == 0:
+                    self._back_to_menu()
 
     # ── Draw ───────────────────────────────────────────────────────────────────
     def draw(self):
