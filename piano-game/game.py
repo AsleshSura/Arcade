@@ -562,6 +562,7 @@ class RhythmGame:
 
     def _load_and_play(self, song: SongDef):
         pygame.mixer.music.stop()
+        self._loaded_audio_path = None  # force fresh load before every game start
         self._load_audio(song)
 
     def _start_music(self):
@@ -628,7 +629,7 @@ class RhythmGame:
         song = self.selected_song
         while self.pattern_index < len(song.pattern):
             t, lane, is_hold, hold_dur = song.pattern[self.pattern_index]
-            if self.song_elapsed >= t:
+            if self.song_elapsed >= t - (HIT_ZONE_Y + HIT_ZONE_H // 2 + TILE_H // 2) / TILE_SPEED:
                 self.p1.spawn(lane, is_hold, hold_dur)
                 self.p2.spawn(lane, is_hold, hold_dur)
                 self.pattern_index += 1
@@ -827,7 +828,8 @@ class RhythmGame:
         pygame.K_DOWN:  2, 
         pygame.K_RIGHT: 3
     }
-    P2_KEYS = {pygame.K_f:0, pygame.K_g:1, pygame.K_h:2, pygame.K_j:3}
+    P2_KEYS = {pygame.K_f:0, pygame.K_g:1, pygame.K_h:2, pygame.K_j:3,
+               pygame.K_1:0, pygame.K_2:1, pygame.K_3:2, pygame.K_4:3}
 
     def _keydown(self, key):
         if key == pygame.K_ESCAPE: self.quit()
