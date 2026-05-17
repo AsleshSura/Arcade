@@ -1,9 +1,8 @@
 class Player:
     points = 0
 
-    def __init__(uid, name):
+    def __init__(uid):
         UID = uid
-        name = name
 
     def addPoints(num):
         points += num

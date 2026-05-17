@@ -8,11 +8,10 @@ class Database:
     Database = {}
 
     def newPlayer(UID, name):
-        Database.append(UID, Player(UID, name))
+        Database.append(UID, Player(UID))
     
-    def findPlayer(UID, name=None):
+    def findPlayer(UID):
         if UID not in Database:
-            self.newPlayer(UID, name)
-        else:
-            return Database[UID]
+            self.newPlayer(UID)
+        return Database[UID]
         
