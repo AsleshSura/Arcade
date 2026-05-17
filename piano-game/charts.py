@@ -53,7 +53,7 @@ BAD_ROMANCE = SongDef(
     title      = "Bad Romance",
     artist     = "Lady Gaga",
     bpm        = 117,
-    audio_file = _audio("Bad_Romance_KLICKAUD.mp3"),
+    audio_file = _audio("Bad_Romance.mp3"),
     pattern    = [
     (1.091, 1, False, 0.0),
     (1.091, 3, False, 0.0),
