@@ -76,6 +76,16 @@ class ScannerBlackjackGame(tk.Tk):
             side=tk.LEFT, pady=10
         )
 
+    def _clear(self):
+        for w in self.body.winfo_children():
+            w.destroy()
+
+    def _center(self):
+        """Return a frame centered in body."""
+        f = tk.Frame(self.body, bg=PANEL_BG)
+        f.place(relx=0.5, rely=0.5, anchor="center")
+        return f
+
 
 player = Player.player
 PlayerUID = player.UID
@@ -117,3 +127,7 @@ player.addPoints(score)
 print("Your final score is:", score)
 print("Points won from this game have been added to your account.")
 print("Account Balance:", player.points)
+
+if __name__ == "__main__":
+    app = ScannerBlackjackGame()
+    app.mainloop()
