@@ -17,14 +17,15 @@ from datetime import datetime
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT = os.path.dirname(os.path.abspath(__file__))
-PCSCLITE_DIR = os.path.abspath(os.path.join(ROOT, ".."))
-sys.path.insert(0, PCSCLITE_DIR)
+REPO_ROOT = os.path.abspath(os.path.join(ROOT, ".."))
+NFC_DIR = os.path.join(REPO_ROOT, "nfc-scanner")
+sys.path.insert(0, NFC_DIR)
 
-DB_PATH = os.path.join(PCSCLITE_DIR, "badge_scans.db")
-PIANO_SCRIPT = os.path.join(PCSCLITE_DIR, "piano-game", "game.py")
-SCANNER_BLACKJACK_SCRIPT = os.path.join(PCSCLITE_DIR, "scanner-blackjack", "main.py")
-SCANNER_BLACKJACK_DIR = os.path.join(PCSCLITE_DIR, "scanner-blackjack")
-DUCK_SCRIPT = os.path.join(ROOT, "..", "duck-hunt", "main.py")  # update if path differs
+DB_PATH = os.path.join(NFC_DIR, "badge_scans.db")
+PIANO_SCRIPT = os.path.join(REPO_ROOT, "piano-game", "game.py")
+SCANNER_BLACKJACK_SCRIPT = os.path.join(REPO_ROOT, "scanner-blackjack", "main.py")
+SCANNER_BLACKJACK_DIR = os.path.join(REPO_ROOT, "scanner-blackjack")
+DUCK_SCRIPT = os.path.join(REPO_ROOT, "duck-hunt", "main.py")  # update if path differs
 
 # ── NFC import (graceful fallback for dev without hardware) ────────────────────
 try:
