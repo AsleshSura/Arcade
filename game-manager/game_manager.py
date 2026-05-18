@@ -14,7 +14,7 @@ import os
 import subprocess
 import uuid
 from datetime import datetime
-import main.py
+import main
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT = os.path.dirname(os.path.abspath(__file__))
