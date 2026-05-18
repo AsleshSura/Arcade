@@ -589,10 +589,11 @@ class GameManager(tk.Tk):
         f = self._center()
 
         if self.selected_game == "piano":
-            game_name = "Piano Battle 🎹" 
-        if self.selected_game == "scanner_blackjack":
-            game_name = "Scanner Blackjack 🃏" 
-        else: game_name = "Duck Hunt 🦆"
+            game_name = "Piano Battle 🎹"
+        elif self.selected_game == "scanner_blackjack":
+            game_name = "Scanner Blackjack 🃏"
+        else:
+            game_name = "Duck Hunt 🦆"
         _lbl(f, "Place Your Bets", font=F_TITLE).pack(pady=(0, 4))
         _lbl(f, game_name, color=ACCENT, font=F_SUBHEAD).pack(pady=(0, 20))
 
@@ -662,19 +663,21 @@ class GameManager(tk.Tk):
         self._clear()
         f = self._center()
         if self.selected_game == "piano":
-            game_name = "Piano Battle 🎹" 
-        if self.selected_game == "scanner_blackjack":
-            game_name = "Scanner Blackjack 🃏" 
-        else: game_name = "Duck Hunt 🦆"
+            game_name = "Piano Battle 🎹"
+        elif self.selected_game == "scanner_blackjack":
+            game_name = "Scanner Blackjack 🃏"
+        else:
+            game_name = "Duck Hunt 🦆"
         _lbl(f, "Game in Progress", font=F_TITLE).pack(pady=(0, 8))
         _lbl(f, game_name, color=ACCENT, font=F_HEAD).pack(pady=(0, 24))
         _lbl(f, "◎", color=GREEN, font=("Helvetica", 56)).pack(pady=(0, 24))
 
         if self.selected_game == "piano":
-            script = PIANO_SCRIPT 
-        if self.selected_game == "scanner_blackjack":
-            script = SCANNER_BLACKJACK_SCRIPT 
-        else: script = DUCK_SCRIPT
+            script = PIANO_SCRIPT
+        elif self.selected_game == "scanner_blackjack":
+            script = SCANNER_BLACKJACK_SCRIPT
+        else:
+            script = DUCK_SCRIPT
         self._game_proc = None
 
         if os.path.exists(script):
@@ -743,7 +746,7 @@ class GameManager(tk.Tk):
                      f"lose   -{lose_delta:,} points",
                      lambda i=1 - idx: self._apply_outcome(i),
                      color=ACCENT, font=F_BTN_SM).pack(fill=tk.X, pady=4)
-        elif self.selected_game == "duck hunt":
+        if self.selected_game == "duck_hunt":
             # ── Duck Hunt: single-column layout ───────────────────────────
             f = tk.Frame(self.body, bg=PANEL_BG)
             f.pack(expand=True)
