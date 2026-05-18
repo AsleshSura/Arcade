@@ -331,6 +331,7 @@ class HoldTile(Tile):
         self.held           = False
         self.released_early = False
         self.completed      = False
+        self.hold_tick_timer = 0.0
 
     @property
     def tail_y(self): return self.y - self.hold_px
@@ -448,23 +449,33 @@ class PlayerState:
                 if not t.tail_in_hit_zone():
                     t.released_early = True
 
-    def update(self, dt):
+    def update(self, dt, bpm=120, fts=None, font=None):
+        eighth_dur = 30.0 / max(1, bpm)   # duration of one 8th note in seconds
         for t in self.tiles:
             t.update(dt)
             if isinstance(t, HoldTile) and t.held:
-                self.score += SCORE_HOLD_TICK
+                t.hold_tick_timer += dt
+                if t.hold_tick_timer >= eighth_dur:
+                    t.hold_tick_timer -= eighth_dur   # subtract to preserve remainder, avoiding drift
+                    self.score += SCORE_PERFECT // 2
+                    self.combo += 1
+                    self.max_combo = max(self.max_combo, self.combo)
+                    if fts is not None and font is not None:
+                        lx = self.x_offset + t.lane * LANE_W + LANE_W // 2
+                        fts.append(FloatingText("PERFECT", lx, HIT_ZONE_Y - 20, PERFECT_COLOR, font))
             if not isinstance(t, HoldTile):
                 if not t.hit and not t.missed and t.y > HIT_ZONE_Y + HIT_ZONE_H + TILE_H:
                     t.missed = True; self.misses += 1; self.combo = 0
             if isinstance(t, HoldTile) and t.head_hit:
-                if t.y > HIT_ZONE_Y + HIT_ZONE_H + TILE_H:
+                # Use tail_y so the tile only completes once the TAIL clears the hit zone
+                if t.tail_y > HIT_ZONE_Y + HIT_ZONE_H:
                     if t.held or not t.released_early:
                         t.completed = True
                     else:
                         t.missed = True; self.misses += 1
 
         self.tiles = [t for t in self.tiles
-                      if t.y < SCREEN_H + 200
+                      if (t.tail_y < SCREEN_H + 200 if isinstance(t, HoldTile) else t.y < SCREEN_H + 200)
                       and not (isinstance(t, HoldTile) and t.completed)]
         for i in range(NUM_LANES):
             self.lane_flash[i] = max(0.0, self.lane_flash[i] - 5.0*dt)
@@ -511,7 +522,7 @@ class RhythmGame:
         pygame.init()
         pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
         pygame.display.set_caption("Rhythm Game")
-        flags = pygame.FULLSCREEN if SERIAL_AVAILABLE else 0
+        flags = pygame.FULLSCREEN if SERIAL_AVAILABLE or os.environ.get("FULLSCREEN") else 0
         self.screen = pygame.display.set_mode((SCREEN_W, SCREEN_H), flags)
         self.clock  = pygame.time.Clock()
 
@@ -675,7 +686,9 @@ class RhythmGame:
             for l in ev["p1_release"]:  self.p1.release(l)
             for l in ev["p2_press"]:    self.p2.press(l, self.fts, self.font_med)
             for l in ev["p2_release"]:  self.p2.release(l)
-            self.p1.update(dt); self.p2.update(dt)
+            bpm = self.selected_song.bpm
+            self.p1.update(dt, bpm, self.fts, self.font_med)
+            self.p2.update(dt, bpm, self.fts, self.font_med)
             for ft in self.fts: ft.update(dt)
             self.fts = [ft for ft in self.fts if ft.alive]
 

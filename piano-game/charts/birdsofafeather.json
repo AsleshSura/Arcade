@@ -1,23 +1,17 @@
 {
   "title": "Birds of a Feather",
   "artist": "Billie Eilish",
-  "bpm": 119,
-  "audio_file": "BIRDS_OF_A_FEATHER.mp3",
+  "bpm": 105,
+  "audio_file": "C:\\Users\\nzhan\\OneDrive\\Documents\\Github Files -use\\Hack-Club-Stasis-Hackathon-Repo\\piano-game\\charts\\BIRDS_OF_A_FEATHER.mp3",
   "notes": [
     {
-      "time_ms": 504,
-      "lane": 0,
+      "time_ms": 571,
+      "lane": 1,
       "type": "tap",
       "duration_ms": 0
     },
     {
-      "time_ms": 1008,
-      "lane": 2,
-      "type": "tap",
-      "duration_ms": 0
-    },
-    {
-      "time_ms": 1513,
+      "time_ms": 1143,
       "lane": 1,
       "type": "tap",
       "duration_ms": 0
