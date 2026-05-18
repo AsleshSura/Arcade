@@ -300,7 +300,7 @@ class StartupScreen:
             self.edit_title.value  = s["title"]
             self.edit_artist.value = s["artist"]
             self.edit_bpm.value    = str(s["bpm"])
-            self.edit_mp3.value    = s.get("audio_file", "")
+            self.edit_mp3.value    = os.path.basename(s.get("audio_file", ""))
             self.edit_load.value   = os.path.join("charts", s["filename"])
         self.dropdown_open = False
 
@@ -821,7 +821,7 @@ class ChartEditor:
             "title": self.title,
             "artist": self.artist,
             "bpm": round(self.bpm),
-            "audio_file": self.mp3_path or "",
+            "audio_file": os.path.basename(self.mp3_path) if self.mp3_path else "",
             "notes": [],
         }
         for n in sorted(self.notes, key=lambda n: n.time):
