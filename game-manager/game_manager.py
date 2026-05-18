@@ -23,6 +23,7 @@ sys.path.insert(0, PCSCLITE_DIR)
 DB_PATH = os.path.join(PCSCLITE_DIR, "badge_scans.db")
 PIANO_SCRIPT = os.path.join(PCSCLITE_DIR, "piano-game", "game.py")
 SCANNER_BLACKJACK_SCRIPT = os.path.join(PCSCLITE_DIR, "scanner-blackjack", "main.py")
+SCANNER_BLACKJACK_DIR = os.path.join(PCSCLITE_DIR, "scanner-blackjack")
 DUCK_SCRIPT = os.path.join(ROOT, "..", "duck-hunt", "main.py")  # update if path differs
 
 # ── NFC import (graceful fallback for dev without hardware) ────────────────────
@@ -243,6 +244,9 @@ class GameManager(tk.Tk):
         )
         self._scan_btn.pack(side=tk.RIGHT, padx=18, pady=10)
 
+        # Small developer button: show scanner-blackjack source files
+        _btn(hdr, "Show Code", self.show_scanner_code, color=MUTED, font=("Helvetica", 10)).pack(side=tk.RIGHT, padx=(0,8), pady=10)
+
     def _toggle_scanner(self):
         if self.nfc.active:
             self.nfc.stop()
@@ -252,6 +256,60 @@ class GameManager(tk.Tk):
             self.nfc.start()
             self._scan_btn_text.set("Scanner: ON  ●")
             self._scan_btn.config(bg=GREEN, activebackground=GREEN)
+
+    def show_scanner_code(self):
+        # Open a simple code viewer for the scanner-blackjack folder
+        d = SCANNER_BLACKJACK_DIR
+        win = tk.Toplevel(self)
+        win.title("Scanner Blackjack — Source")
+        win.geometry("900x600")
+
+        left = tk.Frame(win, bg=PANEL_BG, width=260)
+        left.pack(side=tk.LEFT, fill=tk.Y)
+        right = tk.Frame(win)
+        right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
+        lb = tk.Listbox(left, bg=CARD_BG, fg=TEXT, width=34, bd=0, highlightthickness=0)
+        lb.pack(fill=tk.Y, expand=True, padx=8, pady=8)
+
+        txt = tk.Text(right, wrap=tk.NONE, bg="#0c0c10", fg=TEXT)
+        txt.pack(fill=tk.BOTH, expand=True)
+        txt.config(state=tk.DISABLED)
+
+        # vertical scrollbar for text
+        vs = tk.Scrollbar(right, orient=tk.VERTICAL, command=txt.yview)
+        vs.pack(side=tk.RIGHT, fill=tk.Y)
+        txt.config(yscrollcommand=vs.set)
+
+        try:
+            files = sorted([f for f in os.listdir(d) if f.endswith('.py')])
+        except Exception as e:
+            lb.insert(tk.END, f"Error reading folder: {e}")
+            return
+
+        for f in files:
+            lb.insert(tk.END, f)
+
+        def _load(evt=None):
+            sel = lb.curselection()
+            if not sel:
+                return
+            fn = files[sel[0]]
+            path = os.path.join(d, fn)
+            try:
+                with open(path, 'r') as fh:
+                    content = fh.read()
+            except Exception as e:
+                content = f"Error reading {path}: {e}"
+            txt.config(state=tk.NORMAL)
+            txt.delete('1.0', tk.END)
+            txt.insert(tk.END, content)
+            txt.config(state=tk.DISABLED)
+
+        lb.bind('<<ListboxSelect>>', _load)
+        if files:
+            lb.selection_set(0)
+            _load()
 
     # ── Scanner polling ────────────────────────────────────────────────────────
 
