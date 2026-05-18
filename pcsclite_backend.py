@@ -67,28 +67,13 @@ def wait_for_card(hcontext, reader, timeout=0):
             readerstates,
         )
         if rv == SCARD_E_TIMEOUT:
-            # No change within this interval; loop and wait again.
-            print(f"[pcsc] SCardGetStatusChange: timeout ({timeout_ms} ms)")
             continue
-
-        # Debug output to help diagnose missed card-detection events.
-        print(f"[pcsc] SCardGetStatusChange rv={rv}, newstates={newstates}")
         check(rv, "SCardGetStatusChange failed")
 
-        try:
-            _, eventstate, _ = newstates[0]
-        except Exception:
-            print(f"[pcsc] Unexpected SCardGetStatusChange output: {newstates}")
-            # Reset state tracking and retry.
-            readerstates = [(reader, SCARD_STATE_UNAWARE)]
-            continue
-
-        print(f"[pcsc] Reader event state={eventstate:#010x}")
+        _, eventstate, _ = newstates[0]
         if eventstate & SCARD_STATE_PRESENT:
-            print("[pcsc] Card present detected")
             return True
 
-        # Update the cached state and continue waiting.
         readerstates = [(reader, eventstate)]
 
 
