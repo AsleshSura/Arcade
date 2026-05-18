@@ -587,7 +587,11 @@ class GameManager(tk.Tk):
         self._clear()
         f = self._center()
 
-        game_name = "Piano Battle 🎹" if self.selected_game == "piano" else "Duck Hunt 🦆"
+        if self.selected_game == "piano":
+            game_name = "Piano Battle 🎹" 
+        if self.selected_game == "scanner_blackjack":
+            game_name = "Scanner Blackjack 🃏" 
+        else: game_name = "Duck Hunt 🦆"
         _lbl(f, "Place Your Bets", font=F_TITLE).pack(pady=(0, 4))
         _lbl(f, game_name, color=ACCENT, font=F_SUBHEAD).pack(pady=(0, 20))
 
