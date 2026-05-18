@@ -2,10 +2,10 @@ import Player
 import random
 
 
-
-PlayerUID = Player.UID
-PlayerName = Player.name
-PlayerPoints = Player.points
+player = Player.player
+PlayerUID = player.UID
+PlayerName = player.name
+PlayerPoints = player.points
 
 BlackjackThreshold = 21
 
@@ -37,8 +37,8 @@ if failCase:
     print("Points lost:", score)
     score *= -1
 
-Player.addPoints(score)
+player.addPoints(score)
 
 print("Your final score is:", score)
 print("Points won from this game have been added to your account.")
-print("Account Balance:", PlayerPoints)
+print("Account Balance:", player.points)

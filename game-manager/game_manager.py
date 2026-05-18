@@ -477,6 +477,12 @@ class GameManager(tk.Tk):
             on_select=lambda: self._pick_game("duck_hunt"),
         ).pack(side=tk.LEFT, padx=14)
 
+        self._make_game_card(
+            row, "Scanner Blackjack", "🃏", "1 Player",
+            enabled=True,
+            on_select=lambda: self._pick_game("scanner_blackjack"),
+        ).pack(side=tk.LEFT, padx=14)
+
         def go_back():
             if two_player:
                 self.show_welcome_split()
