@@ -22,6 +22,7 @@ sys.path.insert(0, PCSCLITE_DIR)
 
 DB_PATH = os.path.join(PCSCLITE_DIR, "badge_scans.db")
 PIANO_SCRIPT = os.path.join(PCSCLITE_DIR, "piano-game", "game.py")
+SCANNER_BLACKJACK_SCRIPT = os.path.join(PCSCLITE_DIR, "scanner-blackjack", "main.py")
 DUCK_SCRIPT = os.path.join(ROOT, "..", "duck-hunt", "main.py")  # update if path differs
 
 # ── NFC import (graceful fallback for dev without hardware) ────────────────────
@@ -597,12 +598,20 @@ class GameManager(tk.Tk):
 
         self._clear()
         f = self._center()
-        game_name = "Piano Battle 🎹" if self.selected_game == "piano" else "Duck Hunt 🦆"
+        if self.selected_game == "piano":
+            game_name = "Piano Battle 🎹" 
+        if self.selected_game == "scanner_blackjack":
+            game_name = "Scanner Blackjack 🃏" 
+        else: game_name = "Duck Hunt 🦆"
         _lbl(f, "Game in Progress", font=F_TITLE).pack(pady=(0, 8))
         _lbl(f, game_name, color=ACCENT, font=F_HEAD).pack(pady=(0, 24))
         _lbl(f, "◎", color=GREEN, font=("Helvetica", 56)).pack(pady=(0, 24))
 
-        script = PIANO_SCRIPT if self.selected_game == "piano" else DUCK_SCRIPT
+        if self.selected_game == "piano":
+            script = PIANO_SCRIPT 
+        if self.selected_game == "scanner_blackjack":
+            script = SCANNER_BLACKJACK_SCRIPT 
+        else: script = DUCK_SCRIPT
         self._game_proc = None
 
         if os.path.exists(script):
