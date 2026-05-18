@@ -14,6 +14,7 @@ import os
 import subprocess
 import uuid
 from datetime import datetime
+import main.py
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -742,8 +743,28 @@ class GameManager(tk.Tk):
                      f"lose   -{lose_delta:,} points",
                      lambda i=1 - idx: self._apply_outcome(i),
                      color=ACCENT, font=F_BTN_SM).pack(fill=tk.X, pady=4)
-        else:
+        elif self.selected_game == "duck hunt":
             # ── Duck Hunt: single-column layout ───────────────────────────
+            f = tk.Frame(self.body, bg=PANEL_BG)
+            f.pack(expand=True)
+
+            _lbl(f, p1["name"], font=F_HEAD).pack(pady=(10, 4))
+            _lbl(f, f"Bet: {p1['bet']:,} pts", color=MUTED, font=F_MUTED).pack(pady=(0, 16))
+
+            bet = p1["bet"]
+
+            _btn(f, f"win   +{bet:,} points",
+                 lambda: self._apply_outcome(0),
+                 color=GREEN, font=F_BTN_SM).pack(fill=tk.X, padx=60, pady=5)
+            _btn(f, "draw   +0 points",
+                 lambda: self._apply_outcome("draw"),
+                 color=YELLOW, fg="#000000", font=F_BTN_SM).pack(fill=tk.X, padx=60, pady=5)
+            _btn(f, f"lose   -{bet:,} points",
+                 lambda: self._apply_outcome("lose"),
+                 color=ACCENT, font=F_BTN_SM).pack(fill=tk.X, padx=60, pady=5)
+            
+        elif self.selected_game == "scanner_blackjack":
+            # ── Scanner Blackjack: single-column layout ───────────────────────────
             f = tk.Frame(self.body, bg=PANEL_BG)
             f.pack(expand=True)
 
@@ -766,6 +787,13 @@ class GameManager(tk.Tk):
         p1 = self.players[0]
         p2 = self.players[1]
 
+        if self.selected_game == "scanner_blackjack":
+            if main.failcase:
+                result = "lose"
+                apply_points(p1["uid"], -p1["bet"])
+            else:
+                result = "win"
+                apply_points(p1["uid"], p1["bet"])  
         if result == "draw" or result is None:
             pass  # bets returned — no change
         elif result == "lose":
