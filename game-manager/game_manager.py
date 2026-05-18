@@ -14,7 +14,6 @@ import os
 import subprocess
 import uuid
 from datetime import datetime
-import main
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -787,13 +786,6 @@ class GameManager(tk.Tk):
         p1 = self.players[0]
         p2 = self.players[1]
 
-        if self.selected_game == "scanner_blackjack":
-            if main.failcase:
-                result = "lose"
-                apply_points(p1["uid"], -p1["bet"])
-            else:
-                result = "win"
-                apply_points(p1["uid"], p1["bet"])  
         if result == "draw" or result is None:
             pass  # bets returned — no change
         elif result == "lose":
