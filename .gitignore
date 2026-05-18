@@ -1,0 +1,7 @@
+# Claude Code internal workspace
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
