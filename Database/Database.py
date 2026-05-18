@@ -1,17 +1,14 @@
-import Player
-import bisect
-
-
-# Given UID and name from scanner app
-
 class Database:
-    Database = {}
+    players = {}
 
-    def newPlayer(UID, name):
-        Database.append(UID, Player(UID))
+    @staticmethod
+    def newPlayer(uid, name=None):
+        import Player
+        Database.players[uid] = Player.Player(uid, name)
     
-    def findPlayer(UID):
-        if UID not in Database:
-            self.newPlayer(UID)
-        return Database[UID]
+    @staticmethod
+    def findPlayer(uid, name=None):
+        if uid not in Database.players:
+            Database.newPlayer(uid, name)
+        return Database.players[uid]
         

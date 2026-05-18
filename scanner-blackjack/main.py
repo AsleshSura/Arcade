@@ -1,4 +1,4 @@
-from .Database import Player
+import Player
 import random
 
 
@@ -17,22 +17,22 @@ failCase = False
 while not failCase:
     Barcode = input("Scan your barcode: ")
     number = random.choice(Barcode)
-    score += number
+    score += int(number)
 
     print("You got a", number +".","You're total score is:", score)
 
     if score > BlackjackThreshold:
         failCase = True
 
-    choice = input("Would you like to keep going? [Y]")
+    choice = input("Would you like to keep going? [Y]: ")
 
-    if choice.lower == ("y" or "yes"):
+    if choice.lower() in ("y", "yes"):
         pass
-    elif choice.lower == ("n" or "no"):
+    elif choice.lower() in ("n", "no"):
         break
 
 if failCase:
-    print("Your score exceeds the limit of", BlackjackThreshold + ".")
+    print("Your score exceeds the limit of", str(BlackjackThreshold) + ".")
     print("You will lose the equivalent number of points from your account.")
     print("Points lost:", score)
     score *= -1

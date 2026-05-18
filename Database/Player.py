@@ -1,11 +1,11 @@
 class Player:
-    points = 0
+    def __init__(self, uid, name=None):
+        self.UID = uid
+        self.name = name
+        self.points = 0
 
-    def __init__(uid):
-        UID = uid
+    def addPoints(self, num):
+        self.points += num
 
-    def addPoints(num):
-        points += num
-
-    def getPoints():
-        return points
+    def getPoints(self):
+        return self.points
