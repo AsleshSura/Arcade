@@ -1,6 +1,5 @@
 import Player
 import random
-import game_manager
 
 
 player = Player.player
