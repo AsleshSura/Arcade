@@ -1,15 +1,12 @@
-from .Database import Player
+#from .Database import Player
 import random
 
-
-
-PlayerUID = Player.UID
-PlayerName = Player.name
-PlayerPoints = Player.points
+PlayerUID = "io"
+PlayerPoints = 0
 
 BlackjackThreshold = 21
 
-print("Hey", PlayerName + ", welcome to Scanner Blackjack!")
+print("Hey twin, welcome to Scanner Blackjack!")
 
 score = 0
 failCase = False
@@ -17,14 +14,15 @@ failCase = False
 while not failCase:
     Barcode = input("Scan your barcode: ")
     number = random.choice(Barcode)
-    score += number
+    score += int(number)
 
     print("You got a", number +".","You're total score is:", score)
 
     if score > BlackjackThreshold:
         failCase = True
+        break
 
-    choice = input("Would you like to keep going? [Y]")
+    choice = input("Would you like to keep going? [Y]: ")
 
     if choice.lower == ("y" or "yes"):
         pass
@@ -32,13 +30,14 @@ while not failCase:
         break
 
 if failCase:
-    print("Your score exceeds the limit of", BlackjackThreshold + ".")
+    print("Your score exceeds the limit of", str(BlackjackThreshold) + ".")
     print("You will lose the equivalent number of points from your account.")
     print("Points lost:", score)
     score *= -1
 
-Player.addPoints(score)
+#Player.addPoints(score)
+PlayerPoints += score
 
-print("Your final score is:", score)
+print("Your fi nal score is:", score)
 print("Points won from this game have been added to your account.")
 print("Account Balance:", PlayerPoints)
